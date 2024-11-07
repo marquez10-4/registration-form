@@ -1,0 +1,206 @@
+<!-- <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>login form</h1>
+    <label>
+        <input type="name"place holder ="enter your name"> <br> <br>
+        <input type="password"place holder="password"> <br> <br>
+        <button type ="submit">submit</button>
+    </label>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operation</title>
+    <style>
+        /* Container styling */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1em;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Button styling for edit/delete */
+        .action-buttons button {
+            padding: 5px 10px;
+            margin: 0 2px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .action-buttons .edit-btn {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+        .action-buttons .delete-btn {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .action-buttons .edit-btn:hover {
+            background-color: #ec971f;
+        }
+
+        .action-buttons .delete-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>CRUD Operation</h2>
+        <!-- Create, Read, Update, Delete -->
+        <form id="crudForm">
+            <input type="hidden" id="editIndex" value="-1">
+            <label for="regNo">Register Number<span style="color: red;">*</span>:</label>
+            <input type="text" id="regNo" required>
+            <label for="name">Name<span style="color: red;">*</span>:</label>
+            <input type="text" id="name" required>
+            <label for="age">Age<span style="color: red;">*</span>:</label>
+            <input type="number" id="age" required>
+            <label for="email">Email<span style="color: red;">*</span>:</label>
+            <input type="email" id="email" required>
+            <button type="submit">Add / Update</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Register No.</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dataList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let data = [];
+
+        document.getElementById('crudForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            let regNo = document.getElementById('regNo').value;
+            let name = document.getElementById('name').value;
+            let age = document.getElementById('age').value;
+            let email = document.getElementById('email').value;
+
+            data.push({ regNo, name, age, email });
+            document.getElementById('crudForm').reset();
+            displayData();
+        });
+
+        function displayData() {
+            let ListData = document.getElementById('dataList');
+            ListData.innerHTML = '';
+            data.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.regNo}</td>
+                    <td>${item.name}</td>
+                    <td>${item.age}</td>
+                    <td>${item.email}</td>
+                    <td class="action-buttons">
+                        <button class="edit-btn" onclick="editData(${index})">Edit</button>
+                        <button class="delete-btn" onclick="deleteData(${index})">Delete</button>
+                    </td>
+                `;
+                ListData.appendChild(row);
+            });
+        }
+
+        function deleteData(index) {
+            data.splice(index, 1); // Remove the item at the specified index
+            displayData(); // Refresh the table display
+        }
+
+        function editData(index) {
+            const item = data[index];
+            document.getElementById('regNo').value = item.regNo;
+            document.getElementById('name').value = item.name;
+            document.getElementById('age').value = item.age;
+            document.getElementById('email').value = item.email;
+            document.getElementById('editIndex').value = index; // Set the edit index
+        }
+    </script>
+</body>
+
+</html>
